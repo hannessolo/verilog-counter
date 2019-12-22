@@ -40,9 +40,9 @@ int main(int argc, char** argv, char** env) {
     counter->eval();
 
     if (counter->addr == test_case->expected_addr) {
-      printf("Passed");
+      printf("Passed\n");
     } else {
-      printf("Failed");
+      printf("Failed\n");
     }
   }
   counter->final();
