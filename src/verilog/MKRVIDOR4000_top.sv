@@ -172,7 +172,7 @@ const microaddr::cmd next_cmd = microaddr::INC;
 reg [10:0] ldadr = 0;
 
 microaddr_counter adc (
-  wOSC_CLK,
+  bMKR_D[12],
   bMKR_D[0],
   next_cmd,
   ldadr,

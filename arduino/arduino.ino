@@ -20,6 +20,10 @@
 #define NO_APP no_data
 #define NO_USER_DATA no_data
 
+#ifdef VSCODE
+extern void clockout(int a, int b);
+#endif
+
 __attribute__((used, section(".fpga_bitstream_signature")))
 const unsigned char signatures[4096] = {
     //#include "signature.ttf"
@@ -67,11 +71,7 @@ void setup() {
     pinMode(i, INPUT);
   }
 
-//  // Disable all JTAG Pins (usefull for USB BLASTER connection)
-//  pinMode(TDO, INPUT);
-//  pinMode(TMS, INPUT);
-//  pinMode(TDI, INPUT);
-//  pinMode(TCK, INPUT);
+  pinMode(12, OUTPUT);
 
   // Configure other share pins as input too
   pinMode(SIGNAL_IN, INPUT); // oSAM_INT
@@ -88,15 +88,16 @@ void setup() {
 // the loop function runs over and over again forever
 void loop() {
 
+  digitalWrite(12, HIGH);
+  delay(1);
+  digitalWrite(12, LOW);
+
   int bits = 0;
-  for (int i = 0; i < 12; i++) {
-    bits <<= 1;
+  for (int i = 1; i < 12; i++) {
     if (digitalRead(i) == HIGH) {
-      bits |= 1;
+      bits |= (1 << (i - 1));
     }
-    
   }
   Serial.println(bits);
-  delay(100);
-  
+  delay(10);
 }
