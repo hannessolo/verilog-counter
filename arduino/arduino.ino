@@ -63,17 +63,40 @@ void setup() {
   // Configure onboard LED Pin as output
   pinMode(LED_BUILTIN, OUTPUT);
 
-  // Disable all JTAG Pins (usefull for USB BLASTER connection)
-  pinMode(TDO, INPUT);
-  pinMode(TMS, INPUT);
-  pinMode(TDI, INPUT);
-  pinMode(TCK, INPUT);
+  for (int i = 1; i < 12; i++) {
+    pinMode(i, INPUT);
+  }
+
+//  // Disable all JTAG Pins (usefull for USB BLASTER connection)
+//  pinMode(TDO, INPUT);
+//  pinMode(TMS, INPUT);
+//  pinMode(TDI, INPUT);
+//  pinMode(TCK, INPUT);
 
   // Configure other share pins as input too
   pinMode(SIGNAL_IN, INPUT); // oSAM_INT
   pinMode(MB_INT_PIN, INPUT);
   pinMode(MB_INT, INPUT);
+
+  pinMode(0, OUTPUT);
+  digitalWrite(0, HIGH);
+  digitalWrite(0, LOW);
+  delay(1000);
+  while (!Serial);
 }
 
 // the loop function runs over and over again forever
-void loop() {}
+void loop() {
+
+  int bits = 0;
+  for (int i = 0; i < 12; i++) {
+    bits <<= 1;
+    if (digitalRead(i) == HIGH) {
+      bits |= 1;
+    }
+    
+  }
+  Serial.println(bits);
+  delay(100);
+  
+}

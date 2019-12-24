@@ -89,8 +89,9 @@ set_global_assignment -name OPTIMIZATION_MODE "AGGRESSIVE PERFORMANCE"
 
 
 set_global_assignment -name ENABLE_SIGNALTAP OFF
+set_global_assignment -name SYSTEMVERILOG_FILE microaddr.sv
+set_global_assignment -name SYSTEMVERILOG_FILE microaddr_counter.sv
 set_global_assignment -name SDC_FILE ../../constraints/MKRVIDOR4000/vidor_s.sdc
 set_global_assignment -name QIP_FILE ../../ip/SYSTEM_PLL/SYSTEM_PLL.qip
-set_global_assignment -name VERILOG_FILE MKRVIDOR4000_top.v
-set_global_assignment -name VERILOG_INCLUDE_FILE user.v
+set_global_assignment -name SYSTEMVERILOG_FILE MKRVIDOR4000_top.sv
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

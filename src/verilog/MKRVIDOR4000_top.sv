@@ -1,15 +1,25 @@
 /*
+* Copyright 2018 ARDUINO SA (http://www.arduino.cc/)
+* This file is part of Vidor IP.
+* Copyright (c) 2018
+* Authors: Dario Pennisi
+*
+* This software is released under:
+* The GNU General Public License, which covers the main part of
+* Vidor IP
+* The terms of this license can be found at:
+* https://www.gnu.org/licenses/gpl-3.0.en.html
+*
+* You can be released from the requirements of the above licenses by purchasing
+* a commercial license. Buying such a license is mandatory if you want to modify or
+* otherwise use the software for commercial activities involving the Arduino
+* software without disclosing the source code of your own applications. To purchase
+* a commercial license, send an email to license@arduino.cc.
+*
+*/
 
-To prevent the possibility of chainging the boilerplate, this file gets included
-in the top level Verilog file
-
-Notice, though, that Quartus may not figure out you need a compile when you change this
-So it will ask you if you want to run the process again and you should say yes.If smart recompile
-is on this may not be enough.
-
-Here's the things you have available:
-
-
+module MKRVIDOR4000_top
+(
   // system signals
   input         iCLK,
   input         iRESETn,
@@ -28,7 +38,7 @@ Here's the things you have available:
   output        oSDRAM_RASn,
   output        oSDRAM_WEn,
 
-  // SAM D21 PINS (Arduino I/O pins)
+  // SAM D21 PINS
   inout         bMKR_AREF,
   inout  [6:0]  bMKR_A,
   inout  [14:0] bMKR_D,
@@ -109,12 +119,16 @@ Here's the things you have available:
 
 );
 
+// signal declaration
 
-wire        wOSC_CLK; // Internal clock
+wire        wOSC_CLK;
 
-// Generated PLL clock
 wire        wCLK8,wCLK24, wCLK64, wCLK120;
 
+wire [31:0] wJTAG_ADDRESS, wJTAG_READ_DATA, wJTAG_WRITE_DATA, wDPRAM_READ_DATA;
+wire        wJTAG_READ, wJTAG_WRITE, wJTAG_WAIT_REQUEST, wJTAG_READ_DATAVALID;
+wire [4:0]  wJTAG_BURST_COUNT;
+wire        wDPRAM_CS;
 
 wire [7:0]  wDVI_RED,wDVI_GRN,wDVI_BLU;
 wire        wDVI_HS, wDVI_VS, wDVI_DE;
@@ -126,26 +140,53 @@ assign wVID_CLK   = wCLK24;
 assign wVID_CLKx5 = wCLK120;
 assign wCLK8      = iCLK;
 
+// internal oscillator
+cyclone10lp_oscillator   osc
+  (
+  .clkout(wOSC_CLK),
+  .oscena(1'b1));
 
-// This forms a power up reset. rRESETCNT[5] will be low for awhile on start up
+// system PLL
+SYSTEM_PLL PLL_inst(
+  .areset(1'b0),
+  .inclk0(wCLK8),
+  .c0(wCLK24),
+  .c1(wCLK120),
+  .c2(wMEM_CLK),
+  .c3(oSDRAM_CLK),
+  .c4(wFLASH_CLK),
+
+  .locked());
+
+
 reg [5:0] rRESETCNT;
 
-*/
+/* User code */
 
-// Your code goes here:
+/* D0: reset
+   D1-11: data
+ */
 
-reg [27:0] hadcounter;
+const microaddr::cmd next_cmd = microaddr::INC;
 
-assign bMKR_D[6]=bMKR_D[5]?hadcounter[27]:hadcounter[21];
+reg [10:0] ldadr = 0;
 
-always @(posedge wOSC_CLK)
+microaddr_counter adc (
+  wOSC_CLK,
+  bMKR_D[0],
+  next_cmd,
+  ldadr,
+  bMKR_D[11:1]
+);
+
+/* End user code */
+
+always @(posedge wMEM_CLK)
 begin
   if (!rRESETCNT[5])
   begin
-     hadcounter<=28'hfffffff;
-  end
-  else
-  begin
-	 if (hadcounter==28'h0) hadcounter<=28'hffffffff; else hadcounter<=hadcounter-28'h1;
+  rRESETCNT<=rRESETCNT+1;
   end
 end
+
+endmodule
