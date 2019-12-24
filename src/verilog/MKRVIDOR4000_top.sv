@@ -161,22 +161,16 @@ SYSTEM_PLL PLL_inst(
 
 reg [5:0] rRESETCNT;
 
+reg [7:0] result;
+reg [7:0] instr = 0;
+
 /* User code */
 
-/* D0: reset
-   D1-11: data
- */
-
-const microaddr::cmd next_cmd = microaddr::INC;
-
-reg [10:0] ldadr = 0;
-
-microaddr_counter adc (
-  bMKR_D[12],
+cpu cpu1 (
   bMKR_D[0],
-  next_cmd,
-  ldadr,
-  bMKR_D[11:1]
+  instr,
+  bMKR_D[11:1],
+  result
 );
 
 /* End user code */

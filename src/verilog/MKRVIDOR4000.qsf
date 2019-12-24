@@ -89,8 +89,11 @@ set_global_assignment -name OPTIMIZATION_MODE "AGGRESSIVE PERFORMANCE"
 
 
 set_global_assignment -name ENABLE_SIGNALTAP OFF
-set_global_assignment -name SYSTEMVERILOG_FILE microaddr.sv
-set_global_assignment -name SYSTEMVERILOG_FILE microaddr_counter.sv
+set_global_assignment -name SYSTEMVERILOG_FILE cpu.sv
+set_global_assignment -name SYSTEMVERILOG_FILE counter_types.sv
+set_global_assignment -name SYSTEMVERILOG_FILE counter.sv
+set_global_assignment -name SYSTEMVERILOG_FILE alu_types.sv
+set_global_assignment -name SYSTEMVERILOG_FILE alu.sv
 set_global_assignment -name SDC_FILE ../../constraints/MKRVIDOR4000/vidor_s.sdc
 set_global_assignment -name QIP_FILE ../../ip/SYSTEM_PLL/SYSTEM_PLL.qip
 set_global_assignment -name SYSTEMVERILOG_FILE MKRVIDOR4000_top.sv

@@ -1,4 +1,4 @@
-MODULES := counter
+MODULES := counter alu
 
 TYPE_FILES := counter_types.sv alu_types.sv
 
