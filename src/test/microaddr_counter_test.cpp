@@ -1,5 +1,5 @@
-#include "Microaddr_microaddr.h"
-#include "Microaddr.h"
+#include "microaddr_counter.h"
+#include "microaddr_counter_microaddr.h"
 #include "verilated.h"
 
 struct TestCase {
@@ -11,16 +11,16 @@ struct TestCase {
 };
 
 TestCase test_cases[] {
-  { "reset", 1, Microaddr_microaddr::cmd::NONE, 0, 0 }
+  { "reset", 1, microaddr_counter_microaddr::cmd::NONE, 0, 0 }
 };
 
 int main(int argc, char** argv, char** env) {
   Verilated::commandArgs(argc, argv);
-  Microaddr* counter = new Microaddr;
+  microaddr_counter* counter = new microaddr_counter;
 
   counter->clk = 0;
   counter->reset = 0;
-  counter->cmd = Microaddr_microaddr::cmd::NONE;
+  counter->cmd = microaddr_counter_microaddr::cmd::NONE;
   counter->load_addr = 0;
   counter->eval();
 
