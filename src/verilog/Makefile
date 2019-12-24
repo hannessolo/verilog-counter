@@ -1,6 +1,6 @@
-MODULES := microaddr_counter
+MODULES := counter
 
-TYPE_FILES := microaddr.sv
+TYPE_FILES := counter_types.sv alu_types.sv
 
 CC := verilator
 

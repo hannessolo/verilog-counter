@@ -1,7 +1,7 @@
-module microaddr_counter(
+module counter(
   input logic clk,
   input logic reset,
-  input microaddr::cmd cmd,
+  input counter_types::cmd_t cmd,
   input logic[10:0] load_addr,
   output logic[10:0] addr
 );
@@ -9,11 +9,11 @@ module microaddr_counter(
   logic[10:0] next_addr;
   always_comb begin
     unique case(cmd)
-      microaddr::NONE:
+      counter_types::NONE:
         next_addr = addr;
-      microaddr::INC:
+      counter_types::INC:
         next_addr = addr + 1;
-      microaddr::LOAD:
+      counter_types::LOAD:
         next_addr = load_addr;
       default:
         next_addr = 0;
