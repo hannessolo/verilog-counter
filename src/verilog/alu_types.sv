@@ -5,6 +5,6 @@ typedef enum logic[1:0] {
   SUB,
   OR,
   AND
-} alu_t;
+} alu_t /* verilator public */;
 
 endpackage

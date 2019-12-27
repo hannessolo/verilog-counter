@@ -1,8 +1,9 @@
 #include "alu.h"
+#include "alu_alu_types.h"
 
 struct TestCase {
   const char* name;
-  uint8_t op;
+  alu_alu_types::alu_t op;
   uint8_t a;
   uint8_t b;
   uint8_t ex_z;
@@ -10,11 +11,11 @@ struct TestCase {
 };
 
 TestCase test_cases[] {
-  { "add", 0, 1, 1, 0, 2 },
-  { "sub", 1, 5, 3, 0, 2 },
-  { "or", 2, 0b01, 0b10, 0, 0b11 },
-  { "and", 3, 0b01, 0b11, 0, 0b01 },
-  { "zf", 1, 5, 5, 1, 0 }
+  { "add", alu_alu_types::ADD, 1, 1, 0, 2 },
+  { "sub", alu_alu_types::SUB, 5, 3, 0, 2 },
+  { "or", alu_alu_types::OR, 0b01, 0b10, 0, 0b11 },
+  { "and", alu_alu_types::AND, 0b01, 0b11, 0, 0b01 },
+  { "zf", alu_alu_types::SUB, 5, 5, 1, 0 }
 };
 
 int main(int argc, char** argv, char** env) {
